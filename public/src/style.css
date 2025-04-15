@@ -152,7 +152,6 @@ button:disabled,
 }
 
 /* Message styling */
-
 .message {
   margin: 10px 0;
   padding: 12px;
@@ -169,23 +168,23 @@ button:disabled,
 
 .user {
   background-color: #e3f2fd;
-  /* Pastel light blue */
   color: #333;
   align-self: flex-end;
-  /* Align to right */
   border-bottom-right-radius: 3px;
-  /* Bubble shape */
   margin-left: auto;
+}
+
+.user.transcription {
+  font-style: italic;
+  background-color: #f5f5f5;
+  border: 1px solid #e0e0e0;
 }
 
 .assistant {
   background-color: #fce4ec;
-  /* Pinkish */
   color: #333;
   align-self: flex-start;
-  /* Align to left */
   border-bottom-left-radius: 3px;
-  /* Bubble shape */
   margin-right: auto;
 }
 
@@ -205,6 +204,7 @@ button:disabled,
   color: #666;
   margin-bottom: 4px;
   font-weight: bold;
+  text-transform: capitalize;
 }
 
 .conversation-end {
@@ -221,38 +221,15 @@ button:disabled,
 
 .message-content {
   line-height: 1.4;
+  font-size: 1em;
 }
 
-.thinking-dots {
-  display: inline-flex;
-  gap: 4px;
-  align-items: center;
-  height: 20px;
-  margin-left: 5px;
-  vertical-align: middle;
+.user .message-content {
+  color: #1a237e;
 }
 
-.thinking-text {
-  display: inline-block;
-  margin-right: 4px;
-  font-style: italic;
-}
-
-.thinking-dots .dot {
-  width: 8px;
-  height: 8px;
-  background-color: #888;
-  border-radius: 50%;
-  display: inline-block;
-  animation: pulse 1.5s infinite ease-in-out;
-}
-
-.message.user .thinking-dots .dot {
-  background-color: #4a76fd;
-}
-
-.message.assistant .thinking-dots .dot {
-  background-color: #fd7e4a;
+.assistant .message-content {
+  color: #880e4f;
 }
 
 .thinking-dots {
@@ -296,7 +273,6 @@ button:disabled,
 }
 
 @keyframes pulse {
-
   0%,
   100% {
     transform: scale(0.7);

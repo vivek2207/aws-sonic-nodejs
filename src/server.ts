@@ -8,6 +8,7 @@ import { Buffer } from 'node:buffer';
 import { KnowledgeBaseService } from './services/KnowledgeBaseService';
 import { ToolRegistry } from './services/ToolRegistry';
 import { BANKING_SYSTEM_PROMPT } from './services/prompts';
+import { SessionManager } from './services/SessionManager';
 
 // Configure AWS credentials
 const AWS_PROFILE_NAME = process.env.AWS_PROFILE || 'default';
@@ -15,6 +16,7 @@ const AWS_PROFILE_NAME = process.env.AWS_PROFILE || 'default';
 // Initialize services
 const kbService = new KnowledgeBaseService('UPMMRHVPD4');
 const toolRegistry = new ToolRegistry(kbService);
+const sessionManager = SessionManager.getInstance();
 
 // Create Express app and HTTP server
 const app = express();
@@ -83,11 +85,37 @@ io.on('connection', (socket) => {
         session.onEvent('textOutput', async (data) => {
             console.log('Text output:', data);
             
-            // If this is a user query, process it through the tool registry
+            // Always emit the original text output first to show what was transcribed
             if (data.role === 'USER') {
+                socket.emit('textOutput', {
+                    ...data,
+                    content: `You said: "${data.content}"`
+                });
+
                 try {
-                    const response = await toolRegistry.executeTool('banking_info', data.content);
-                    // Send only the first sentence or a concise response
+                    // Extract phone number from voice input if present
+                    const phoneRegex = /\b\d{10}\b/;
+                    const phoneMatch = data.content.match(phoneRegex);
+                    if (phoneMatch) {
+                        const phoneNumber = phoneMatch[0];
+                        sessionManager.setPhoneNumber(socket.id, phoneNumber);
+                        console.log('Phone number extracted from voice:', phoneNumber);
+                    }
+
+                    // Check if the query is about personal information
+                    const queryLower = data.content.toLowerCase();
+                    const isPersonalQuery = queryLower.includes('my') || 
+                                          queryLower.includes('account') || 
+                                          queryLower.includes('loan') || 
+                                          queryLower.includes('balance') || 
+                                          queryLower.includes('credit') || 
+                                          queryLower.includes('score');
+
+                    // Use personal_info tool for personal queries, banking_info for general queries
+                    const toolName = isPersonalQuery ? 'personal_info' : 'banking_info';
+                    const response = await toolRegistry.executeTool(toolName, data.content, socket.id);
+                    
+                    // Send the assistant's response
                     const conciseResponse = response.split('.')[0] + '.';
                     socket.emit('textOutput', {
                         ...data,

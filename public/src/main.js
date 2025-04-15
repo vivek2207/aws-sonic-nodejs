@@ -211,11 +211,22 @@ function base64ToFloat32Array(base64String) {
 function handleTextOutput(data) {
     console.log("Processing text output:", data);
     if (data.content) {
-        const messageData = {
-            role: data.role,
-            message: data.content
-        };
-        chatHistoryManager.addTextMessage(messageData);
+        // For user messages, show what was transcribed
+        if (data.role === 'USER') {
+            const messageData = {
+                role: 'USER',
+                message: `${data.content}`,
+                isTranscription: true
+            };
+            chatHistoryManager.addTextMessage(messageData);
+        } else {
+            // For assistant messages
+            const messageData = {
+                role: data.role,
+                message: data.content
+            };
+            chatHistoryManager.addTextMessage(messageData);
+        }
     }
 }
 
@@ -249,10 +260,17 @@ function updateChatUI() {
             roleLabel.textContent = item.role;
             messageDiv.appendChild(roleLabel);
 
-            const content = document.createElement('div');
-            content.textContent = item.message || "No content";
-            messageDiv.appendChild(content);
-
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            
+            // If it's a user message and transcription
+            if (item.role === 'USER' && item.isTranscription) {
+                messageContent.textContent = item.message;
+            } else {
+                messageContent.textContent = item.message;
+            }
+            
+            messageDiv.appendChild(messageContent);
             chatContainer.appendChild(messageDiv);
         }
     });
