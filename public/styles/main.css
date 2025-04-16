@@ -1,0 +1,17 @@
+/* Add styling for conversation turns */
+.conversation-turn {
+    margin-bottom: 16px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 8px;
+}
+
+/* Style for ended messages */
+.message.ended {
+    opacity: 0.8;
+}
+
+/* Make the most recent assistant message stand out */
+.message.assistant:not(.ended) {
+    border-left: 4px solid #007BFF;
+    background-color: #f8f9fa;
+} 

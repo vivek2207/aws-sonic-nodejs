@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Audio Streaming to Bedrock</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/src/style.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <h2>Login</h2>
+            <p>Please enter your 10-digit mobile number or click "Random User" to use a demo account:</p>
+            <input type="tel" id="phone-input" placeholder="Enter your mobile number" pattern="[0-9]{10}" maxlength="10">
+            <div class="button-group">
+                <button id="login-button" class="button">Login</button>
+                <button id="random-user-button" class="button">Random User</button>
+            </div>
+            <p id="login-error" class="error-text"></p>
+        </div>
+    </div>
+
+    <div id="app" style="display: none;">
+        <div id="status" class="disconnected">Disconnected</div>
+        <div id="user-info"></div>
+        <div id="chat-container"></div>
+        <div id="controls">
+            <button id="start" class="button">Start Streaming</button>
+            <button id="stop" class="button" disabled>Stop Streaming</button>
+        </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
