@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Banking Voice Assistant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/src/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <header class="app-header">
+            <div class="header-logo">
+                <i class="fas fa-university"></i>
+                <span>Banking Assistant</span>
+            </div>
+            <div id="status" class="disconnected">
+                <i class="fas fa-circle-exclamation"></i> Disconnected
+            </div>
+            <button id="logout-button" class="button secondary">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </header>
+
+        <div id="user-info-container"></div>
+        
+        <div class="chat-wrapper">
+            <div id="chat-container"></div>
+        </div>
+        
+        <div id="controls">
+            <button id="start" class="button">
+                <i class="fas fa-microphone"></i> Start Talking
+            </button>
+            <button id="stop" class="button" disabled>
+                <i class="fas fa-stop-circle"></i> Stop Talking
+            </button>
+        </div>
+        
+        <footer class="app-footer">
+            <p>© 2025 Banking Voice Assistant | All Rights Reserved</p>
+        </footer>
+    </div>
+    
+    <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

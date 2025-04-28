@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bank Voice Bot - Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/src/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div id="login-container">
+        <div class="login-logo">
+            <i class="fas fa-university"></i>
+        </div>
+        <h1>Bank Voice Bot</h1>
+        <p class="subtitle">Welcome to our voice-enabled banking assistant. Please login to continue.</p>
+        
+        <div id="login-form">
+            <div class="input-container">
+                <label for="phone-number">Phone Number</label>
+                <input type="text" id="phone-number" placeholder="Enter your 10-digit phone number" maxlength="10">
+                <div class="error-text" id="phone-error"></div>
+            </div>
+            <button id="login-button" class="button">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+            <div class="separator">or</div>
+            <button id="random-login-button" class="button secondary">
+                <i class="fas fa-random"></i> Use Random Number
+            </button>
+        </div>
+        <div id="login-status"></div>
+        
+        <div class="login-footer">
+            <p>Need help? Contact customer support at <strong>1800-123-4567</strong></p>
+        </div>
+    </div>
+    
+    <script type="module" src="/src/login.js"></script>
+</body>
+</html> 
