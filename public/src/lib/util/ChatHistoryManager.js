@@ -23,34 +23,39 @@ export class ChatHistoryManager {
     }
 
     addTextMessage(content) {
-        if (!this.chatRef || !this.setChat) {
-            console.error("ChatHistoryManager: chatRef or setChat is not initialized");
-            return;
-        }
+    if (!this.chatRef || !this.setChat) {
+        console.error("ChatHistoryManager: chatRef or setChat is not initialized");
+        return;
+    }
 
-        let history = this.chatRef.current?.history || [];
-        let updatedChatHistory = [...history];
-        let lastTurn = updatedChatHistory[updatedChatHistory.length - 1];
+    let history = this.chatRef.current?.history || [];
+    let updatedChatHistory = [...history];
+    let lastTurn = updatedChatHistory[updatedChatHistory.length - 1];
 
-        if (lastTurn !== undefined && lastTurn.role === content.role) {
-            // Same role, append to the last turn
+    // Check if this is a duplicate message
+    if (lastTurn !== undefined && lastTurn.role === content.role) {
+        // Check if the new message is already contained in the last message
+        // This prevents duplicate content from being appended
+        if (!lastTurn.message.includes(content.message)) {
+            // Only append if it's not a duplicate
             updatedChatHistory[updatedChatHistory.length - 1] = {
                 ...content,
                 message: lastTurn.message + " " + content.message
             };
         }
-        else {
-            // Different role, add a new turn
-            updatedChatHistory.push({
-                role: content.role,
-                message: content.message
-            });
-        }
-
-        this.setChat({
-            history: updatedChatHistory
+    }
+    else {
+        // Different role, add a new turn
+        updatedChatHistory.push({
+            role: content.role,
+            message: content.message
         });
     }
+
+    this.setChat({
+        history: updatedChatHistory
+    });
+}
 
     endTurn() {
         if (!this.chatRef || !this.setChat) {
