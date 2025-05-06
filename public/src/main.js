@@ -348,9 +348,17 @@ function base64ToFloat32Array(base64String) {
 }
 
 // Process message data and add to chat history
+// Process message data and add to chat history
 function handleTextOutput(data) {
     console.log("Processing text output:", data);
     if (data.content) {
+        // Check if the content contains the interrupted flag
+        if (data.content.includes('{ "interrupted" : true }')) {
+            // If interrupted, don't add this message to chat history
+            console.log("Interrupted message detected, skipping display");
+            return;
+        }
+        
         const messageData = {
             role: data.role,
             message: data.content
